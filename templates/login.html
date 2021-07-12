@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="static/css/style.css" />
+    <!-- FONTS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="static/js/main.js"></script>
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid px-2 mx-0">
+        <div class="row justify-content-end w-100">
+          <a class="logo col-6" href="/"
+            ><img
+              src="https://img.icons8.com/bubbles/48/000000/duolingo-logo.png"
+            />Flask</a
+          >
+          <span class="col-6 d-flex justify-content-end logo" id="lgnbtn"
+            ><i class="far fa-user"></i>&nbsp;Login/Sign up</span
+          >
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-3">
+      <form method="POST" action="/auth" onsubmit="return validate()">
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label"
+            >Email address</label
+          >
+          <input
+            type="email"
+            class="form-control relative"
+            id="eml"
+            placeholder=""
+            onkeydown="resettxt()"
+            flag="0"
+            name="email"
+            aria-describedby="emailHelp"
+            required
+          />
+          {% if mail_err %}
+          <div id="emailHelp" class="form-text fw-bold text-danger">
+            <i class="mx-2 fas fa-exclamation-triangle"></i>{{mail_err}}
+            <p></p>
+          </div>
+          {% else %}
+          <div id="emailHelp" class="form-text">
+            We'll never share your email with anyone else.
+          </div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Mobile</label>
+          <input
+            type="number"
+            min="6500000000"
+            max="9999999999"
+            class="form-control"
+            name="mobile"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            required
+          />
+          {% if mobile_err %}
+          <div id="emailHelp" class="form-text fw-bold text-danger">
+            <i class="mx-2 fas fa-exclamation-triangle"></i>{{mobile_err}}
+            <p></p>
+          </div>
+          {% else %}
+          <div id="emailHelp" class="form-text">
+            We'll never share your email with anyone else.
+          </div>
+          {% endif %}
+        </div>
+        <div class="mb-3" style="position: relative">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <div class="relative">
+            <input
+              type="password"
+              name="pwd"
+              class="form-control pwdf"
+              id="exampleInputPassword1"
+              onkeyup="matchpwd()"
+            />
+            <i class="eye far fa-eye" onclick="togglepwd()"></i>
+          </div>
+        </div>
+        <div class="mb-3" style="position: relative">
+          <label for="exampleInputPassword2" class="form-label"
+            >Conform Password</label
+          >
+          <div class="relative">
+            <input
+              type="password"
+              class="form-control pwdf"
+              onkeyup="matchpwd()"
+              id="exampleInputPassword2"
+            />
+            <i class="eye far fa-eye" onclick="togglepwd()"></i>
+          </div>
+          <small
+            class="text-danger fw-bold mt-2"
+            id="notmatched"
+            style="display: none"
+            ><i class="fas fa-exclamation-triangle"></i> Password doesn't
+            match</small
+          >
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+          <label class="form-check-label" for="exampleCheck1"
+            >Check me out</label
+          >
+        </div>
+        <button type="submit" id="subtn" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    -->
+
+    <!-- LOGIN AND REGISTRATION FORM STARTS -->
+
+    <div class="wrapper log_reg">
+      <div class="conatiner section w-100">
+        <div class="row w-100 justify-content-center">
+          <div class="col-4 bg-light py-3 frm">
+            <span class="d-flex justify-content-center"
+              ><img
+                src="https://img.icons8.com/bubbles/48/000000/duolingo-logo.png"
+              /><span class="logo pl-3 pt-3">Flask</span></span
+            >
+            <h3 class="mt-3">Log in Now</h3>
+            <div class="container px-4">
+              <div class="row inputf">
+                <input type="email" id="eml" placeholder="" onkeydown="resettxt()" flag="0" name="email" aria-describedby="emailHelp" required placeholder="Enter email here..."
+                />
+                <label for="emp">Email</label>
+              </div>
+              <div class="row inputf">
+                <input type="password" name="pwd" id="pwd" placeholder="Enter password here..."/>
+                <label for="emp">Password</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGIN AND REGISTRATION FORM ENDS -->
+  </body>
+</html>

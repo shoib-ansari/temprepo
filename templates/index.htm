@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="951225969802-biilj0hooa9v9e3ccvbofnromhgkovhn.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="static/css/style.css" />
+    <!-- FONTS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <script type="text/javascript" src="static/js/main.js"></script>
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid px-2 mx-0">
+        <div class="row justify-content-end w-100">
+          <a class="logo col-6" href="/"
+            ><img
+              src="https://img.icons8.com/bubbles/48/000000/duolingo-logo.png"
+            />Flask</a
+          >
+          <span class="col-6 d-flex justify-content-end logo" id="lgnbtn">
+            {% if user %}
+            <i class="far fa-user"></i>&nbsp;Hii {{user}}</span>
+            {% else %}
+            <i class="far fa-user"></i>&nbsp;Login/Sign up</span>
+            {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <a href="/sendmail">Send mail</a>
+
+    <div class="container mt-3">
+      <form method="POST" action="/auth" onsubmit="return validate()">
+        <div class="mb-3"></div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Mobile</label>
+          <input
+            type="number"
+            min="6500000000"
+            max="9999999999"
+            class="form-control"
+            name="mobile"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            required
+          />
+        </div>
+        <div class="mb-3" style="position: relative">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <div class="relative">
+            <input
+              type="password"
+              name="pwd"
+              class="form-control pwdf"
+              id="exampleInputPassword1"
+              onkeyup="matchpwd()"
+            />
+            <i class="eye far fa-eye" onclick="togglepwd()"></i>
+          </div>
+        </div>
+        <div class="mb-3" style="position: relative">
+          <label for="exampleInputPassword2" class="form-label"
+            >Conform Password</label
+          >
+          <div class="relative">
+            <input
+              type="password"
+              class="form-control pwdf"
+              onkeyup="matchpwd()"
+              id="exampleInputPassword2"
+            />
+            <i class="eye far fa-eye" onclick="togglepwd()"></i>
+          </div>
+          <small
+            class="text-danger fw-bold mt-2"
+            id="notmatched-"
+            style="display: none"
+            ><i class="fas fa-exclamation-triangle"></i> Password doesn't
+            match</small
+          >
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+          <label class="form-check-label" for="exampleCheck1"
+            >Check me out</label
+          >
+        </div>
+        <button type="submit" id="subtn" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
+    -->
+
+<!-- google login starts -->
+
+<div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+<script>
+  function onSignIn(googleUser) {
+    // Useful data for your client-side scripts:
+    var profile = googleUser.getBasicProfile();
+    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+    console.log('Full Name: ' + profile.getName());
+    console.log('Given Name: ' + profile.getGivenName());
+    console.log('Family Name: ' + profile.getFamilyName());
+    console.log("Image URL: " + profile.getImageUrl());
+    console.log("Email: " + profile.getEmail());
+
+    // The ID token you need to pass to your backend:
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log("ID Token: " + id_token);
+  }
+</script>
+
+<!-- google login ends -->
+
+<!-- FACEBOOK login starts -->
+
+<fb:login-button 
+  scope="public_profile,email"
+  onlogin="checkLoginState();">
+</fb:login-button>
+
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '{your-app-id}',
+      cookie     : true,
+      xfbml      : true,
+      version    : '{api-version}'
+    });
+      
+    FB.AppEvents.logPageView();   
+      
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "https://connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+FB.getLoginStatus(function(response) {
+  statusChangeCallback(response);
+});
+
+<!-- FACEBOOK login ends -->
+
+    <!-- LOGIN AND REGISTRATION FORM STARTS -->
+
+    <div class="wrapper log_reg">
+      <div class="conatiner section w-100">
+        <div class="row w-100 justify-content-center">
+          <div
+            class="col-4 bg-light py-3 frm col-sm-4 col-md-6 col-lg-4 col-10"
+            id="smting"
+          >
+            <i class="far fa-times-circle closebtn"></i>
+
+            <span class="d-flex justify-content-center"
+              ><img
+                src="https://img.icons8.com/bubbles/48/000000/duolingo-logo.png"
+              /><span class="logo pl-3 pt-3">Flask</span></span
+            >
+            <div class="container px-4">
+              <!-- LOGIN form start -->
+              <form action="/auth" class="popfrm" id="log">
+                <h3 class="mt-3 text-center">Log in Now</h3>
+                <div class="row inputf">
+                  <input
+                    type="email"
+                    class="eml"
+                    erf="erl"
+                    id="eml"
+                    flag="0"
+                    name="email"
+                    placeholder="Enter email here..."
+                  />
+                  <label for="emp">Email</label>
+                  <small id="erl" class="errmsg">email not found</small>
+                </div>
+                <small id="erl" class="text-danger fw-bolder"></small>
+                <div class="row inputf">
+                  <input
+                    type="password"
+                    name="pwd"
+                    erf="erlp"
+                    id="pwd"
+                    class="pwdf"
+                    placeholder="Enter password here..."
+                    required
+                  />
+                  <label for="emp">Password</label>
+                  <i
+                    id="eye"
+                    class="eye far fa-eye"
+                    onclick="togglepwd(this)"
+                  ></i>
+                </div>
+                <small id="erlp" class="errmsg">email not found</small>
+                <small
+                  class="d-flex logo my-2"
+                  onclick="getemlfrm()"
+                  style="float: right"
+                  >Forgot Password?</small
+                >
+                <div class="row justify-content-center mt-5">
+                  <button type="submit" id="subtn" class="btn col-5">
+                    Sign in
+                  </button>
+                </div>
+                <p class="text-center mt-3">
+                  Didn't have account?
+                  <span id="regbtn" class="logo">Signup here </span>
+                </p>
+
+                <p></p>
+              </form>
+
+              <!-- LOGIN form ends -->
+
+              <!-- REGISTRATION form start -->
+              <form
+                action="/register"
+                class="popfrm"
+                id="regf"
+                method="post"
+                onsubmit="return validatereg(this)"
+              >
+                <h3 class="mt-3 text-center">Sign up</h3>
+                <div class="row inputf">
+                  <input
+                    type="email"
+                    class="eml"
+                    id="eml2"
+                    erf="err"
+                    flag="0"
+                    name="email"
+                    placeholder="Enter email here..."
+                    required
+                  />
+                  <label for="emp">Email</label>
+                  <small id="err" class="errmsg"
+                    ><i class="fas fa-exclamation-circle"></i>&nbsp;Provide an
+                    email ending with "@gmail.com"</small
+                  >
+                </div>
+                <div class="row inputf">
+                  <input
+                    type="password"
+                    name="pwd"
+                    id="pwd1"
+                    class="pwdf"
+                    placeholder="Enter password here..."
+                    onkeyup="matchpwd()"
+                    required
+                  />
+                  <label for="emp">Password</label>
+                  <i
+                    id="eye"
+                    class="eye far fa-eye"
+                    onclick="togglepwd(this)"
+                  ></i>
+                </div>
+                <!-- Confirm pwd strts -->
+                <div class="row inputf">
+                  <input
+                    type="password"
+                    name="pwd"
+                    id="pwd2"
+                    class="pwdf"
+                    placeholder="Enter password here..."
+                    type="password"
+                    onkeyup="matchpwd()"
+                    required
+                  />
+                  <label for="emp">Confirm Password</label>
+                  <i
+                    id="eye"
+                    class="eye far fa-eye"
+                    onclick="togglepwd(this)"
+                  ></i>
+                </div>
+                <small
+                  class="text-danger fw-bold mt-2"
+                  id="notmatched"
+                  style="display: none"
+                  ><i class="fas fa-exclamation-triangle"></i> Password doesn't
+                  match</small
+                >
+                <!-- Confirm pwd ends -->
+                <div class="row justify-content-center my-3">
+                  <button type="submit" id="signupbtn" class="btn col-6">
+                    Sign Up
+                  </button>
+                </div>
+                <p class="text-center">
+                  Existing user <span class="logo logfrm">Sign In</span> here
+                </p>
+              </form>
+              <!-- REGISTRATION form ends -->
+
+              <!-- GET-EMAIL-ID form start -->
+              <form
+                action="/auth"
+                class="popfrm"
+                id="emalf"
+              >
+                <h3 class="mt-3 text-center">Let's find Your Account</h3>
+
+                <div class="row inputf">
+                  <input
+                    type="email"
+                    class="eml"
+                    id="eml3"
+                    erf="erv"
+                    flag="0"
+                    name="email"
+                    placeholder="Enter email here..."
+                  />
+                  <label for="emp">Email</label>
+                  <small id="erv" class="errmsg"
+                    ><i class="fas fa-exclamation-circle"></i>&nbsp;Provide an
+                    email ending with "@gmail.com"</small
+                  >
+                </div>
+                <div class="row justify-content-center my-3">
+                  <button type="submit" id="subtn" class="btn col-4 col-sm-12">
+                    <div class="d-flex justify-content-center align-middle">
+                      Send verification code 
+                    <div class="spinner-border" ID="vspin" role="status">
+                      <span class="sr-only">Loading...</span>
+                    </div>
+                    </div>
+                  </button>
+                </div>
+                <p style="text-align: center; font-family: cursive">
+                  Got password <span class="logo logfrm">login now</span>
+                </p>
+              </form>
+              <!-- GET-EMAIL-ID form ends -->
+
+              <!-- GET-VERIFICATION-CODE form start -->
+              <form
+                action="/auth"
+                class="popfrm"
+                id="verification"
+                onsubmit="return validate()"
+              >
+                <h3 class="mt-3 text-center">Enter new password</h3>
+                <div class="row inputf">
+                  <input
+                    type="password"
+                    name="pwd"
+                    id="pwd"
+                    class="pwdf"
+                    placeholder="Enter password here..."
+                    required
+                  />
+                  <label for="emp">Password</label>
+                  <i
+                    id="eye"
+                    class="eye far fa-eye"
+                    onclick="togglepwd(this)"
+                  ></i>
+                </div>
+
+                <div class="row inputf">
+                  <input
+                    type="password"
+                    name="pwd"
+                    id="pwd"
+                    class="pwdf"
+                    placeholder="Enter password here..."
+                    required
+                  />
+                  <label for="emp">Password</label>
+                  <i
+                    id="eye"
+                    class="eye far fa-eye"
+                    onclick="togglepwd(this)"
+                  ></i>
+                </div>
+                <div class="row justify-content-center my-3">
+                  <button type="submit" id="subtn" class="btn col-6">
+                    Sign in
+                  </button>
+                </div>
+                <p class="text-center">
+                  Didn't have account <span class="logo">Sign In</span> In here
+                </p>
+              </form>
+              <!-- GET-VERIFICATION-CODE form ends -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGIN AND REGISTRATION FORM ENDS -->
+  </body>
+</html>
